@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Boxes } from '../Data/Boxes';
 import Pagination from 'react-bootstrap/Pagination';
+import { useNavigate } from 'react-router-dom';
 
 function BoxList() {
+  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
 
@@ -11,7 +13,9 @@ function BoxList() {
   const currentItems = Boxes.slice(indexOfFirstItem, indexOfLastItem);
 
   const totalPages = Math.ceil(Boxes.length / itemsPerPage);
-
+  const handleBoxClick = (boxId) => {
+    navigate(`/box/${boxId}`);
+  };
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -43,7 +47,11 @@ function BoxList() {
         </thead>
         <tbody>
           {currentItems.map((box) => (
-            <tr key={box.id} className="text-center">
+            <tr 
+              key={box.id} 
+              className="text-center hover:bg-gray-50 cursor-pointer transition-colors"
+              onClick={() => handleBoxClick(box.id)}
+            >
               <td className="border px-4 py-2">{box.id}</td>
               <td className="border px-4 py-2">{box.name}</td>
               <td className="border px-4 py-2">{box.price}</td>
